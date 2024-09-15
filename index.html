@@ -104,15 +104,30 @@
             font-weight: bold;
             color: red;
         }
+        .language-select {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        .language-select button {
+            margin: 0 5px;
+            padding: 5px 10px;
+            font-size: 12px;
+            width: auto;
+        }
     </style>
 </head>
 <body>
     <div class="page-container">
         <div class="copyright">© El Baron</div>
         <div class="container">
+            <div class="language-select">
+                <button onclick="setLanguage('en')">English</button>
+                <button onclick="setLanguage('ar')">العربية</button>
+                <button onclick="setLanguage('es')">Español</button>
+            </div>
             <img src="logo.jpg" alt="El Baron Logo" class="logo">
-            <h1>Currency Converter</h1>
-            <div class="info-text">
+            <h1 id="title">Currency Converter</h1>
+            <div id="infoText" class="info-text">
                 <span class="highlight">Enter an amount in any currency field, and it will be automatically converted to other listed currencies.</span>
                 <br>
                 To add more currencies, contact El Baron at +96599433246 or +18482037242.
@@ -171,6 +186,51 @@
         const currencies = ['KWD', 'USD', 'SAR', 'JOD', 'EGP', 'INR', 'PKR', 'GBP', 'EUR', 'CAD'];
         let exchangeRates = {};
 
+        const translations = {
+            en: {
+                title: "Currency Converter",
+                infoText: "<span class='highlight'>Enter an amount in any currency field, and it will be automatically converted to other listed currencies.</span><br>To add more currencies, contact El Baron at +96599433246 or +18482037242.",
+                refreshBtn: "Refresh Rates",
+                clearBtn: "Clear Fields",
+                placeholder: "Enter amount",
+                updateSuccess: "Exchange rates updated successfully!",
+                updateError: "Error updating exchange rates. Please try again later."
+            },
+            ar: {
+                title: "محول العملات",
+                infoText: "<span class='highlight'>أدخل مبلغًا في أي حقل عملة، وسيتم تحويله تلقائيًا إلى العملات الأخرى المدرجة.</span><br>لإضافة المزيد من العملات، اتصل بـ El Baron على 0096599433246 أو 0018482037242.",
+                refreshBtn: "تحديث الأسعار",
+                clearBtn: "مسح الحقول",
+                placeholder: "أدخل المبلغ",
+                updateSuccess: "تم تحديث أسعار الصرف بنجاح!",
+                updateError: "خطأ في تحديث أسعار الصرف. يرجى المحاولة مرة أخرى لاحقًا."
+            },
+            es: {
+                title: "Conversor de Monedas",
+                infoText: "<span class='highlight'>Ingrese una cantidad en cualquier campo de moneda, y se convertirá automáticamente a otras monedas listadas.</span><br>Para agregar más monedas, contacte a El Baron al +96599433246 o +18482037242.",
+                refreshBtn: "Actualizar Tasas",
+                clearBtn: "Limpiar Campos",
+                placeholder: "Ingrese monto",
+                updateSuccess: "¡Tasas de cambio actualizadas con éxito!",
+                updateError: "Error al actualizar las tasas de cambio. Por favor, inténtelo de nuevo más tarde."
+            }
+        };
+
+        let currentLang = 'en';
+
+        function setLanguage(lang) {
+            currentLang = lang;
+            const t = translations[lang];
+            document.getElementById('title').textContent = t.title;
+            document.getElementById('infoText').innerHTML = t.infoText;
+            document.getElementById('refreshBtn').textContent = t.refreshBtn;
+            document.getElementById('clearBtn').textContent = t.clearBtn;
+            document.querySelectorAll('input[type="number"]').forEach(input => {
+                input.placeholder = t.placeholder;
+            });
+            document.dir = lang === 'ar' ? 'rtl' : 'ltr';
+        }
+
         async function fetchExchangeRates() {
             console.log('Fetching exchange rates...');
             try {
@@ -178,10 +238,10 @@
                 const data = await response.json();
                 exchangeRates = data.rates;
                 console.log('Exchange rates fetched:', exchangeRates);
-                alert('Exchange rates updated successfully!');
+                alert(translations[currentLang].updateSuccess);
             } catch (error) {
                 console.error('Error fetching exchange rates:', error);
-                alert('Error updating exchange rates. Please try again later.');
+                alert(translations[currentLang].updateError);
             }
         }
 
