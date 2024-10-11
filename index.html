@@ -172,6 +172,10 @@
                 <label for="CAD"><img src="https://flagcdn.com/w40/ca.png" alt="Canada Flag">CAD:</label>
                 <input type="number" id="CAD" placeholder="Enter amount">
             </div>
+            <div class="currency-input">
+                <label for="AED"><img src="https://flagcdn.com/w40/ae.png" alt="UAE Flag">AED:</label>
+                <input type="number" id="AED" placeholder="Enter amount">
+            </div>
             <div class="button-container">
                 <button id="refreshBtn">Refresh Rates</button>
                 <button id="clearBtn">Clear Fields</button>
@@ -183,7 +187,7 @@
     <script>
         console.log('Script started');
 
-        const currencies = ['KWD', 'USD', 'SAR', 'JOD', 'EGP', 'INR', 'PKR', 'GBP', 'EUR', 'CAD'];
+        const currencies = ['KWD', 'USD', 'SAR', 'JOD', 'EGP', 'INR', 'PKR', 'GBP', 'EUR', 'CAD', 'AED'];
         let exchangeRates = {};
 
         const translations = {
